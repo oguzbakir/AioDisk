@@ -16,8 +16,8 @@ except ImportError:
 
 apiKeyTemplate = """{
     "yadisk" : {
-        "application-id" : "4eb072432c9d4113a09a830e29abc329",
-        "application-secret" : "f25f6031d2794fb5ad8f2be60e6ddcbe",
+        "application-id" : "",
+        "application-secret" : "",
         "token" : ""
     }
 }"""
