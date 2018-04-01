@@ -186,3 +186,9 @@ modules.xml
 # Api keys file
 api_keys.json
 client_secret.json
+
+# Venv
+venv/
+
+# Dolphin .directory
+.directory
