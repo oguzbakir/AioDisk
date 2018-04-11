@@ -44,37 +44,46 @@ class GoogleDrive:
         items = results.get('files', [])
         return items
 
-    def searchWithMimeType(self, mimeString):
-        results = self.service.files().list(q="mimeType='" + mimeString + "'",
+    def searchWithMimeType(self, mimestring):
+        results = self.service.files().list(q="mimeType='" + mimestring + "'",
                                               spaces='drive',
                                               fields='nextPageToken, files(id, name)',
                                               pageToken=None).execute()
         items = results.get('files', [])
         return items
 
-    def searchWithName(self, nameString):
-        results = self.service.files().list(q="name contains '" + nameString + "'",
+    def searchWithName(self, namestring):
+        results = self.service.files().list(q="name contains '" + namestring + "'",
                                             spaces='drive',
                                             fields='nextPageToken, files(id, name)',
                                             pageToken=None).execute()
         items = results.get('files', [])
         return items
 
-    def searchWithFullText(self, fullTextString):
-        results = self.service.files().list(q="fullText contains '" + fullTextString + "'",
+    def searchWithFullText(self, fulltextstring):
+        results = self.service.files().list(q="fullText contains '" + fulltextstring + "'",
                                             spaces='drive',
                                             fields='nextPageToken, files(id, name)',
                                             pageToken=None).execute()
         items = results.get('files', [])
         return items
 
-    def getWebContentLink(self, nameString):
-        results = self.service.files().list(q="fullText contains '" + nameString + "'",
+    def getWebContentLink(self, namestring):
+        results = self.service.files().list(q="fullText contains '" + namestring + "'",
                                             spaces='drive',
                                             fields='nextPageToken, files(webContentLink,name)',
                                             pageToken=None).execute()
         items = results.get('files', [])
         return items
+
+    def uploadFile(self, filename):
+        file_metadata = {'name': filename}
+        media = MediaFileUpload('files/photo.jpg',
+                                mimetype='image/jpeg')
+        file = self.service.files().create(body=file_metadata,
+                                            media_body=media,
+                                            fields='id').execute()
+        print('File ID: %s' % file.get('id'))
 
 
 

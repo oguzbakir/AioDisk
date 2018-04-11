@@ -6,21 +6,23 @@ from optparse import OptionParser
 
 from googledrive import GoogleDrive
 
+__version__ = "0.1"
+
 parser = OptionParser()
 parser.add_option("-q", "--quiet",
                   action="store_false", dest="verbose", default=True,
                   help="don't print status messages to stdout")
 parser.add_option("-m", "--mime",
-                  action="store", dest="mimeoption", default=True,
+                  action="store", dest="mimeoption", default=False,
                   help="Mime type search input Ex: image/jpeg for jpg/jpeg files")
-parser.add_option("-n", "--name",
-                  action="store", dest="filename", default=True,
+parser.add_option("-n", "--name-search",
+                  action="store", dest="filename", default=False,
                   help="Search only on file names")
-parser.add_option("-f", "--full-text",
-                  action="store", dest="fulltext", default=True,
+parser.add_option("-f", "--full-text-search",
+                  action="store", dest="fulltext", default=False,
                   help="Search in file and file names")
 parser.add_option("-d", "--disk",
-                  action="store", dest="disk", default=True,
+                  action="store", dest="disk", default=False,
                   help="Select a disk. Avaiable options: 'google-drive, mega'")
 
 (options, args) = parser.parse_args()
@@ -37,7 +39,6 @@ def checkGoogleAPI():
 def main():
     gDrive = False
     mega = False
-
     if options.disk == "google-drive":
         # Show Google Drive Panel
         if not checkGoogleAPI():
