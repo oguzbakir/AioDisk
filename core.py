@@ -7,11 +7,21 @@ from optparse import OptionParser
 from GoogleDrive import GoogleDrive
 
 parser = OptionParser()
-parser.add_option("-f", "--file", dest="filename",
-                  help="write report to FILE", metavar="FILE")
 parser.add_option("-q", "--quiet",
                   action="store_false", dest="verbose", default=True,
                   help="don't print status messages to stdout")
+parser.add_option("-m", "--mime",
+                  action="store", dest="mimeoption", default=True,
+                  help="Mime type search input Ex: image/jpeg for jpg/jpeg files")
+parser.add_option("-n", "--name",
+                  action="store", dest="filename", default=True,
+                  help="Search only on file names")
+parser.add_option("-f", "--full-text",
+                  action="store", dest="fulltext", default=True,
+                  help="Search in file and file names")
+parser.add_option("-d", "--disk",
+                  action="store", dest="disk", default=True,
+                  help="Select a disk. Avaiable options: 'google-drive, mega'")
 
 (options, args) = parser.parse_args()
 DEFAULT_PAGE_SIZE_GOOGLE = 100
@@ -27,26 +37,19 @@ def checkGoogleAPI():
 def main():
     gDrive = False
     mega = False
-    print("""Cloud Status:
-    Google Drive: {0}
-    Mega: {1}
-1- Show Google Drive Panel
-2- Show Mega Panel
-""".format(gDrive, mega))
-    choice = input("Please enter a number\n")
-    if choice == "1":
+
+    if options.disk == "google-drive":
         # Show Google Drive Panel
         if not checkGoogleAPI():
             print("Google client_secret.json not found. Please check your configuration.")
             main()
         else:
             Drive = GoogleDrive()
-            items = Drive.getLastItems(DEFAULT_PAGE_SIZE_GOOGLE)
-            print('Files:')
+            items = Drive.getWebContentLink(options.fulltext)
             for item in items:
-                print('{0} ({1})'.format(item['name'], item['id']))
+                print('{0}&name={1}'.format(item['webContentLink'],item['name']))
 
-    elif choice == "2":
+    elif options.disk == "mega":
         # Show Mega Panel
         nothing = 1
     else:

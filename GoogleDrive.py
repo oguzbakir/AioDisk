@@ -1,7 +1,10 @@
 import os
+import io
 import httplib2
+import mimetypes
 
 from apiclient import discovery
+from googleapiclient.http import MediaIoBaseDownload, MediaFileUpload
 from oauth2client import client
 from oauth2client import tools
 from oauth2client.file import Storage
@@ -24,7 +27,7 @@ class GoogleDrive:
         if not os.path.exists(credential_dir):
             os.makedirs(credential_dir)
         credential_path = os.path.join(credential_dir,
-                                       'drive-python-quickstart.json')
+                                       'aiodisk.json')
 
         store = Storage(credential_path)
         credentials = store.get()
@@ -37,7 +40,46 @@ class GoogleDrive:
 
     def getLastItems(self, size):
         results = self.service.files().list(
-            pageSize=size, fields="nextPageToken, files(id, name)").execute()
+            pageSize=size, spaces='drive', fields="nextPageToken, files(id, name)").execute()
         items = results.get('files', [])
         return items
+
+    def searchWithMimeType(self, mimeString):
+        results = self.service.files().list(q="mimeType='" + mimeString + "'",
+                                              spaces='drive',
+                                              fields='nextPageToken, files(id, name)',
+                                              pageToken=None).execute()
+        items = results.get('files', [])
+        return items
+
+    def searchWithName(self, nameString):
+        results = self.service.files().list(q="name contains '" + nameString + "'",
+                                            spaces='drive',
+                                            fields='nextPageToken, files(id, name)',
+                                            pageToken=None).execute()
+        items = results.get('files', [])
+        return items
+
+    def searchWithFullText(self, fullTextString):
+        results = self.service.files().list(q="fullText contains '" + fullTextString + "'",
+                                            spaces='drive',
+                                            fields='nextPageToken, files(id, name)',
+                                            pageToken=None).execute()
+        items = results.get('files', [])
+        return items
+
+    def getWebContentLink(self, nameString):
+        results = self.service.files().list(q="fullText contains '" + nameString + "'",
+                                            spaces='drive',
+                                            fields='nextPageToken, files(webContentLink,name)',
+                                            pageToken=None).execute()
+        items = results.get('files', [])
+        return items
+
+
+
+
+
+
+
 

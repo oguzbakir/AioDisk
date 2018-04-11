@@ -288,9 +288,6 @@ venv.bak/
 
 # End of https://www.gitignore.io/api/python
 
-# Api keys file
-api_keys.json
-client_secret.json
 
 # Venv
 venv/
