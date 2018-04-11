@@ -4,7 +4,7 @@ import os
 import sys
 from optparse import OptionParser
 
-from GoogleDrive import GoogleDrive
+from googledrive import GoogleDrive
 
 parser = OptionParser()
 parser.add_option("-q", "--quiet",
