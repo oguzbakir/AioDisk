@@ -4,7 +4,7 @@ import os
 import sys
 from optparse import OptionParser
 
-from googledrive import GoogleDrive
+from .googledrive import GoogleDrive
 
 __version__ = "0.1"
 
@@ -57,5 +57,4 @@ def main():
         sys.exit(0)
 
 
-if __name__ == '__main__':
-    main()
+

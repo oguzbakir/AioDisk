@@ -1,2 +1,1 @@
-yadisk
 google-api-python-client
